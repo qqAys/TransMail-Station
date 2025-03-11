@@ -1,0 +1,90 @@
+# 设置 uvicorn 的日志级别
+# 选项: 'critical', 'error', 'warning', 'info', 'debug', 'trace'
+# 默认值: 'info'
+# Set the uvicorn log level.
+# Options: 'critical', 'error', 'warning', 'info', 'debug', 'trace'.
+# Default: 'info'.
+asgi_log_level: "info"
+
+# 设置应用程序的日志级别
+# 选项: 'error', 'warning', 'info', 'debug'
+# 默认值: 'info'
+# Set the app log level.
+# Options: 'error', 'warning', 'info', 'debug'.
+# Default: 'info'.
+app_log_level: "info"
+
+# 绑定到指定端口的套接字
+# 默认值: 8100
+# Bind to a socket with this port.
+# Default: 8100.
+app_port: 8100
+
+# 数据库连接配置, 用于存储邮件数据
+# Database connection configuration, used to store mail data.
+app_database:
+  host: "Database_host"
+  port: 3306
+  user: "user_name"
+  password: "Password"
+
+# 信任请求的域名地址列表
+# The list of trusted request domain addresses.
+trusted_hosts:
+  - "domain.com"
+  - "192.168.0.x"
+
+# 填写随机生成的 API Key, 用于验证请求
+# Fill in the randomly generated API Key for request verification.
+api_key:
+  - "random_key"
+  - "..."
+
+# 发送检查间隔, 单位为分钟
+# Send check interval, in minutes.
+send_interval: 2
+
+# 联系人列表
+# Contact list.
+contact_lists:
+  sales_service:  # 示例 Example
+    - "sales@domain.com"
+    - "service@domain.com"
+  admin_service:
+    - "admin@domain.com"
+    - "no-reply@domain.com"
+  notification_service:
+    - "notification@domain.com"
+
+# 邮件服务器配置, 使用SSL (与上面联系人列表中的邮箱对应)
+# Mail server configuration WITH SSL (corresponding to the emails in the contact list above).
+mail_server:
+  sales@domain.com:
+    host: "smtp.domain.com"  # SMTP 主机 (SMTP host)
+    port: 465  # SMTP 端口 (SMTP port)
+    username: "sales@domain.com"  # 用户名 (Username)
+    password: "password"  # 密码 (Password)
+
+  service@domain.com:
+    host: "smtp.domain.com"
+    port: 465
+    username: "service@domain.com"
+    password: "password"
+
+  admin@domain.com:
+    host: "smtp.domain.com"
+    port: 465
+    username: "admin@domain.com"
+    password: "password"
+
+  no-reply@domain.com:
+    host: "smtp.domain.com"
+    port: 465
+    username: "no-reply@domain.com"
+    password: "password"
+
+  notification@domain.com:
+    host: "smtp.domain.com"
+    port: 465
+    username: "notification@domain.com"
+    password: "password"

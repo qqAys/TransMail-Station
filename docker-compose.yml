@@ -1,0 +1,22 @@
+services:
+  transmail-station:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: transmail-station
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1g"
+    volumes:
+      - ./config:/usr/src/transmail-station/config
+      - ./logs:/usr/src/transmail-station/logs
+    ports:
+      - "0.0.0.0:8083:8100"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8100/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    restart: on-failure
