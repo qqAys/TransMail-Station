@@ -23,9 +23,9 @@ jobs:
       # 构建
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/transmail-station:latest .
+          docker build -t ghcr.io/qqays/transmail-station:latest .
 
       # 推送
       - name: Push Docker image
         run: |
-          docker push ghcr.io/transmail-station:latest
+          docker push ghcr.io/qqays/transmail-station:latest
