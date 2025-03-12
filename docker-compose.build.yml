@@ -1,6 +1,8 @@
 services:
   transmail-station:
-    image: ghcr.io/qqays/transmail-station:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: transmail-station
     logging:
       driver: "json-file"
