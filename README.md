@@ -1,6 +1,8 @@
 TransMail-Station
 ===
 
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/qqAys/TransMail-Station/publish.yml)
+
 [简体中文](./README.zh-CN.md)
 
 # Introduction
