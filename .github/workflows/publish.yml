@@ -37,6 +37,10 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: List local image
+        run: |
+          docker image ls
+
       - name: Tag Docker image for Docker Hub
         run: |
           docker tag ghcr.io/qqays/transmail-station:latest qqays/transmail-station:latest
