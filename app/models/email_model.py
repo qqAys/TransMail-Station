@@ -65,6 +65,11 @@ class Email(BaseModel):
     custom_data: Dict[str, Any] | None = None
 
 
+class MailBoxRespond(BaseModel):
+    mailbox_id: int
+    message: str
+
+
 class EmailRespond(BaseModel):
     """
     邮件类响应\n
@@ -72,7 +77,7 @@ class EmailRespond(BaseModel):
     `data`: 返回数据
     """
     code: EmailRespondCode
-    data: Union[str, dict[str, Any]]
+    data: Union[str, Email, MailBoxRespond]
 
 
 if __name__ == "__main__":
