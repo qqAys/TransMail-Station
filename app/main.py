@@ -10,6 +10,7 @@ from app.utils.util import Config, app_name, app_version, logger
 
 config = Config()
 
+
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     logger.info(f"Starting app {_app.__str__()}")
@@ -33,7 +34,6 @@ app.add_middleware(
 app.include_router(router=api_router.router)
 
 scheduler = BackgroundScheduler()
-
 
 if __name__ == "__main__":
     import uvicorn

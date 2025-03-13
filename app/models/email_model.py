@@ -11,6 +11,7 @@ config = Config()
 contact_lists = config.contact_lists
 MailType = Enum('MailType', {key: key for key in contact_lists.keys()})
 
+
 class MailStatus(str, Enum):
     """
     邮件状态枚举类\n
@@ -23,6 +24,7 @@ class MailStatus(str, Enum):
     SENT = "sent"
     FAILED = "failed"
     CANCEL = "cancel"
+
 
 class EmailRespondCode(int, Enum):
     """
