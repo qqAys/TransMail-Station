@@ -1,6 +1,7 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.utils import formataddr
 from typing import Any
 
 import requests
@@ -33,6 +34,7 @@ def send_email(email: Email) -> dict[str, bool | Any]:
 
     logger.debug(f"send_freq: {send_freq}")
 
+    alias = mail_server[sender].get("alias", None)
     smtp_server = mail_server[sender]["host"]
     port = mail_server[sender]["port"]
     sender_email = mail_server[sender]["username"]
@@ -40,7 +42,10 @@ def send_email(email: Email) -> dict[str, bool | Any]:
 
     message = MIMEMultipart("alternative")
     message["Subject"] = email.subject
-    message["From"] = sender_email
+    if alias is None:
+        message["From"] = sender_email
+    else:
+        message["From"] = formataddr((alias, sender_email))
 
     if "," in email.recipient:
         email.recipient = email.recipient.split(",")

@@ -60,30 +60,35 @@ contact_lists:
 # Mail server configuration WITH SSL (corresponding to the emails in the contact list above).
 mail_server:
   sales@domain.com:
+    alias: "sales service"  # 发件人别名 (Alias)
     host: "smtp.domain.com"  # SMTP 主机 (SMTP host)
     port: 465  # SMTP 端口 (SMTP port)
     username: "sales@domain.com"  # 用户名 (Username)
     password: "password"  # 密码 (Password)
 
   service@domain.com:
+    alias: "sales service"
     host: "smtp.domain.com"
     port: 465
     username: "service@domain.com"
     password: "password"
 
   admin@domain.com:
+    alias: "admin service"
     host: "smtp.domain.com"
     port: 465
     username: "admin@domain.com"
     password: "password"
 
   no-reply@domain.com:
+    alias: "admin service"
     host: "smtp.domain.com"
     port: 465
     username: "no-reply@domain.com"
     password: "password"
 
   notification@domain.com:
+    alias: "notification service"
     host: "smtp.domain.com"
     port: 465
     username: "notification@domain.com"
