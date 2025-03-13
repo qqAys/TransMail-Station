@@ -20,12 +20,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
 
-      # 构建
-      - name: Build Docker image
-        run: |
-          docker build -t ghcr.io/qqays/transmail-station:latest .
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-      # 推送
-      - name: Push Docker image
+      # 构建
+      - name: Build multi-arch Docker image
         run: |
-          docker push ghcr.io/qqays/transmail-station:latest
+          docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/qqays/transmail-station:latest --push .
