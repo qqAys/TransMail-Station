@@ -18,6 +18,24 @@ TransMail Station is a mail management service based on HTTP interfaces, designe
   * Suitable for projects that need to separate email-sending functionality from main business logic
   * Provides simple and easy-to-use interfaces, reducing development complexity and accelerating business development
 
+## Communication Flow
+```mermaid
+sequenceDiagram
+    participant Client as Business System/Client
+    participant TS as transmail-station
+
+    Client->>TS: API request to send email
+    TS->>TS: Check/update contact list
+    alt Immediate send
+        TS->>TS: Invoke email sending module
+        TS->>Client: Callback with sending result
+    else Scheduled send
+        TS->>TS: Add to scheduled task queue
+        TS->>TS: Trigger email sending module
+        TS->>Client: Callback with sending result
+    end
+```
+
 # Quick Start
 
 ```yaml
