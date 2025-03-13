@@ -9,7 +9,7 @@ services:
       options:
         max-size: "1g"
     volumes:
-      - ./config:/usr/src/transmail-station/config
+      - ./config.yml:/usr/src/transmail-station/config/config.yml
       - ./logs:/usr/src/transmail-station/logs
     ports:
       - "8100:8100"

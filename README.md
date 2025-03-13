@@ -18,19 +18,22 @@ TransMail Station is a mail management service based on HTTP interfaces, designe
   * Suitable for projects that need to separate email-sending functionality from main business logic
   * Provides simple and easy-to-use interfaces, reducing development complexity and accelerating business development
 
-# Quick Start (GHCR Image)
+# Quick Start
 
 ```yaml
 services:
   transmail-station:
-    image: ghcr.io/qqays/transmail-station:latest
+    image: ghcr.io/qqays/transmail-station:latest  # use github packages image
+#    image: qqays/transmail-station:latest  # use dockerhub image
     container_name: transmail-station
+#    environment:
+#      - TZ=Asia/Shanghai
     logging:
       driver: "json-file"
       options:
         max-size: "1g"
     volumes:
-      - ./config:/usr/src/transmail-station/config
+      - ./config.yml:/usr/src/transmail-station/config/config.yml
       - ./logs:/usr/src/transmail-station/logs
     ports:
       - "8100:8100"
@@ -45,18 +48,18 @@ services:
 
 ## 1. Create Folders
 ```shell
-mkdir -p TransMail-Station/config && cd TransMail-Station
+mkdir TransMail-Station && cd TransMail-Station
 ```
 
 ## 2. Pull Configuration and `docker-compose.yml`
 ```shell
-wget -O ./config/config.yml https://raw.githubusercontent.com/qqAys/TransMail-Station/refs/heads/main/config/config.example.yml
+wget -O ./config.yml https://raw.githubusercontent.com/qqAys/TransMail-Station/refs/heads/main/config/config.example.yml
 wget -O ./docker-compose.yml https://raw.githubusercontent.com/qqAys/TransMail-Station/refs/heads/main/docker-compose.yml
 ```
 
 ## 3. Edit Configuration
 ```shell
-vim ./config/config.yml
+vim ./config.yml
 ```
 
 For configuration details, see [config.example.yml](./config/config.example.yml).

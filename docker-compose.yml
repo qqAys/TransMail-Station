@@ -1,7 +1,7 @@
 services:
   transmail-station:
-    image: ghcr.io/qqays/transmail-station:latest  # use github package
-#    image: qqays/transmail-station:latest  # use dockerhub
+    image: ghcr.io/qqays/transmail-station:latest  # use github packages image
+#    image: qqays/transmail-station:latest  # use dockerhub image
     container_name: transmail-station
 #    environment:
 #      - TZ=Asia/Shanghai
@@ -10,7 +10,7 @@ services:
       options:
         max-size: "1g"
     volumes:
-      - ./config:/usr/src/transmail-station/config
+      - ./config.yml:/usr/src/transmail-station/config/config.yml
       - ./logs:/usr/src/transmail-station/logs
     ports:
       - "8100:8100"

@@ -23,14 +23,17 @@ TransMail Station 是一个基于 HTTP 接口的邮件管理服务，旨在帮�
 ```yaml
 services:
   transmail-station:
-    image: ghcr.io/qqays/transmail-station:latest
+    image: ghcr.io/qqays/transmail-station:latest  # 使用 github packages 镜像
+#    image: qqays/transmail-station:latest  # 使用 dockerhub 镜像
     container_name: transmail-station
+#    environment:
+#      - TZ=Asia/Shanghai
     logging:
       driver: "json-file"
       options:
         max-size: "1g"
     volumes:
-      - ./config:/usr/src/transmail-station/config
+      - ./config.yml:/usr/src/transmail-station/config/config.yml
       - ./logs:/usr/src/transmail-station/logs
     ports:
       - "8100:8100"
@@ -50,13 +53,13 @@ mkdir -p TransMail-Station/config && cd TransMail-Station
 
 ## 2. 拉取配置与 `docker-compose.yml` 
 ```shell
-wget -O ./config/config.yml https://raw.githubusercontent.com/qqAys/TransMail-Station/refs/heads/main/config/config.example.yml
+wget -O ./config.yml https://raw.githubusercontent.com/qqAys/TransMail-Station/refs/heads/main/config/config.example.yml
 wget -O ./docker-compose.yml https://raw.githubusercontent.com/qqAys/TransMail-Station/refs/heads/main/docker-compose.yml
 ```
 
 ## 3. 编辑配置
 ```shell
-vim ./config/config.yml
+vim ./config.yml
 ```
 
 配置说明详见 [config.example.yml](./config/config.example.yml)

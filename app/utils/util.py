@@ -27,6 +27,11 @@ class Config:
         self.reinit()
 
     def reinit(self):
+        os.makedirs(os.path.join(base_dir, "../../config"), exist_ok=True)
+
+        if not os.path.exists(os.path.join(base_dir, "../../config/config.yml")):
+            raise FileNotFoundError("config.yml File not exists")
+
         with open(os.path.join(base_dir, "../../config/config.yml"), "r", encoding="utf-8") as yml_file:
             config = yaml.safe_load(yml_file)
             self.asgi_log_level = config["asgi_log_level"]
