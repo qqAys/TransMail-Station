@@ -13,15 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 设置 Docker Buildx
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      # 构建
-      - name: Build multi-arch Docker image
-        run: |
-          docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/qqays/transmail-station:latest .
-
       # 登录GitHub Packages
       - name: Log in to GitHub Packages
         uses: docker/login-action@v2
@@ -30,9 +21,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
 
-      - name: Push image to GitHub Packages
+      # 设置 Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      # 构建和推送至 GitHub Packages
+      - name: Build multi-arch Docker image
         run: |
-          docker push ghcr.io/qqays/transmail-station:latest
+          docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/qqays/transmail-station:latest --push .
 
       # 登录 Docker Hub
       - name: Log in to Docker Hub
@@ -41,8 +37,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Tag Docker image for Docker Hub
+      - name: Pull image from GitHub Packages and retag
         run: |
+          docker pull ghcr.io/qqays/transmail-station:latest
           docker tag ghcr.io/qqays/transmail-station:latest qqays/transmail-station:latest
 
       # 推送至 Docker Hub
