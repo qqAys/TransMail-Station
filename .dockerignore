@@ -1,10 +1,13 @@
+__pycache__
 .DS_Store
 .git
 .idea
 .venv
-__pycache__
 .gitignore
+.github
+README.*
 logs
+tests
 config.example.yml
 config.yml
-README.md
+docker-compose.*

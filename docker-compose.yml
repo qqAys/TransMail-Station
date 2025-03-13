@@ -1,7 +1,10 @@
 services:
   transmail-station:
-    image: ghcr.io/qqays/transmail-station:latest
+    image: ghcr.io/qqays/transmail-station:latest  # use github package
+#    image: qqays/transmail-station:latest  # use dockerhub
     container_name: transmail-station
+#    environment:
+#      - TZ=Asia/Shanghai
     logging:
       driver: "json-file"
       options:
