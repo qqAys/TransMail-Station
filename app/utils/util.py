@@ -5,7 +5,7 @@ import yaml
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 app_name = "TransMail-Station"
-app_version = "0.0.1"
+app_version = "0.0.2"
 
 
 class Config:
