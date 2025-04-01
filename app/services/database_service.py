@@ -114,7 +114,7 @@ class DatabaseService:
         with self.db.cursor() as cursor:
             cursor.execute(f"USE `{self.db_name}`;")
 
-            if record_id:
+            if record_id is not None:
                 query = f"""SELECT * FROM email_records WHERE id={record_id}"""
                 cursor.execute(query)
                 result = cursor.fetchone()
