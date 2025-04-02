@@ -63,20 +63,30 @@ def send_email(email: Email) -> dict[str, bool | Any]:
         server = smtplib.SMTP_SSL(smtp_server, port)
         server.login(sender_email, password)
 
-        server.sendmail(sender_email, email.recipient if isinstance(email.recipient, list) else [email.recipient], message.as_string())
+        server.sendmail(
+            sender_email,
+            email.recipient if isinstance(email.recipient, list) else [email.recipient],
+            message.as_string(),
+        )
         server.quit()
         logger.debug(message.__str__())
-        logger.info(f"send mail success, recipient: {email.recipient}, sender: {sender_email}, subject: {email.subject}")
+        logger.info(
+            f"send mail success, recipient: {email.recipient}, sender: {sender_email}, subject: {email.subject}"
+        )
     except Exception as e:
         send_status = False
         logger.error(f"send mail failed, {e}, mail_info: {email.dict()}")
 
-    callback_url = email.callback_on_success if send_status is True else email.callback_on_failure
+    callback_url = (
+        email.callback_on_success if send_status is True else email.callback_on_failure
+    )
 
     if callback_url is not None:
         try:
             requests.get(callback_url.__str__(), timeout=3)
         except Exception as e:
-            logger.warning(f"callback failed, {callback_url}, {e}, mail_info: {email.dict()}")
+            logger.warning(
+                f"callback failed, {callback_url}, {e}, mail_info: {email.dict()}"
+            )
 
     return {"send_status": send_status, "sender": sender_email}

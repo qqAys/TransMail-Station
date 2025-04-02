@@ -18,11 +18,17 @@ def should_send_email():
             send_status = send_result["send_status"]
             sender = send_result["sender"]
 
-            db_service.update_record(mailbox_id, SENT if send_status is True else FAILED, sender)
+            db_service.update_record(
+                mailbox_id, SENT if send_status is True else FAILED, sender
+            )
             if send_status is True:
-                logger.info(f"send mail success, mailbox_id: {mailbox_id}, sender: {sender}")
+                logger.info(
+                    f"send mail success, mailbox_id: {mailbox_id}, sender: {sender}"
+                )
             else:
-                logger.warning(f"send mail failed, mailbox_id: {mailbox_id}, sender: {sender}")
+                logger.warning(
+                    f"send mail failed, mailbox_id: {mailbox_id}, sender: {sender}"
+                )
 
 
 if __name__ == "__main__":

@@ -8,6 +8,7 @@ class SystemRespondCode(int, Enum):
     响应代码枚举类\n
     `200`: 响应成功
     """
+
     SUCCESS = 200
 
 
@@ -17,5 +18,6 @@ class SystemRespond(BaseModel):
     `code`: RespondCode 枚举类\n
     `message`: 返回数据
     """
+
     code: SystemRespondCode
     message: str

@@ -29,7 +29,7 @@ async def lifespan(_app: FastAPI):
 app = FastAPI(redoc_url=None, title=app_name, version=app_version, lifespan=lifespan)
 app.add_middleware(
     middleware_class=TrustedHostMiddleware,
-    allowed_hosts=["localhost", "127.0.0.1", "0.0.0.0", *config.trusted_hosts]
+    allowed_hosts=["localhost", "127.0.0.1", "0.0.0.0", *config.trusted_hosts],
 )
 app.include_router(router=api_router.router)
 
@@ -38,4 +38,6 @@ scheduler = BackgroundScheduler()
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=config.app_port, log_level=config.asgi_log_level)
+    uvicorn.run(
+        app, host="0.0.0.0", port=config.app_port, log_level=config.asgi_log_level
+    )

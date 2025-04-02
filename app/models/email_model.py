@@ -9,7 +9,7 @@ from app.utils.util import Config
 # 邮件类型枚举动态模型，不同的类型会使用不同的发送地址
 config = Config()
 contact_lists = config.contact_lists
-MailType = Enum('MailType', {key: key for key in contact_lists.keys()})
+MailType = Enum("MailType", {key: key for key in contact_lists.keys()})
 
 
 class MailStatus(str, Enum):
@@ -20,6 +20,7 @@ class MailStatus(str, Enum):
     `failed`: 发送失败\n
     `cancel`: 取消发送
     """
+
     PENDING = "pending"
     SENT = "sent"
     FAILED = "failed"
@@ -34,6 +35,7 @@ class EmailRespondCode(int, Enum):
     `401`: 未授权的访问\n
     `404`: 资源未找到
     """
+
     SUCCESS = 200
     FAILURE = 400
     NOT_FOUND = 404
@@ -52,6 +54,7 @@ class Email(BaseModel):
     `callback_on_failure`: 以 `http://` 或 `https://` 开头，邮件发送失败时回调，`3` 秒超时\n
     `custom_data`: 以JSON格式传入其他数据，例如：`{"ad_id": 1090}`
     """
+
     recipient: Union[str, List[str]]
     subject: str
     body: str
@@ -76,6 +79,7 @@ class EmailRespond(BaseModel):
     `code`: RespondCode 枚举类\n
     `data`: 返回数据
     """
+
     code: EmailRespondCode
     data: Union[str, Email, MailBoxRespond]
 

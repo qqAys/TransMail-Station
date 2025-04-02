@@ -19,7 +19,7 @@ class DatabaseService:
                 host=db_config["host"],
                 port=db_config["port"],
                 user=db_config["user"],
-                password=db_config["password"]
+                password=db_config["password"],
             )
             logger.info("Database connection successful")
         except pymysql.err.OperationalError:
@@ -41,9 +41,12 @@ class DatabaseService:
             email_records_table = "email_records"
             cursor.execute(f"USE `{self.db_name}`;")
             cursor.execute("""SHOW TABLES;""")
-            if email_records_table not in [_table[0].lower() for _table in cursor.fetchall()]:
+            if email_records_table not in [
+                _table[0].lower() for _table in cursor.fetchall()
+            ]:
                 logger.info(f"Table {email_records_table} does not exist, creating...")
-                cursor.execute(f"""CREATE TABLE IF NOT EXISTS {email_records_table} (
+                cursor.execute(
+                    f"""CREATE TABLE IF NOT EXISTS {email_records_table} (
             id BIGINT AUTO_INCREMENT PRIMARY KEY,
             type VARCHAR(255) NOT NULL COMMENT '邮件类型' COMMENT 'Email type',
             sender VARCHAR(255) NULL COMMENT '发件人邮箱地址' COMMENT 'Sender email address',
@@ -58,12 +61,15 @@ class DatabaseService:
             callback_on_failure VARCHAR(255) NULL COMMENT '发送失败回调地址' COMMENT 'Callback URL on failure',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '记录创建时间' COMMENT 'Record creation time',
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '记录更新时间' COMMENT 'Record update time'
-        ) COMMENT='邮件发送记录' COMMENT='Email send records';""")
+        ) COMMENT='邮件发送记录' COMMENT='Email send records';"""
+                )
                 self.db.commit()
 
                 # 添加复合索引
                 logger.info("Adding composite index...")
-                cursor.execute("""CREATE INDEX idx_status_scheduled_time ON email_records (status, scheduled_send_time);""")
+                cursor.execute(
+                    """CREATE INDEX idx_status_scheduled_time ON email_records (status, scheduled_send_time);"""
+                )
                 self.db.commit()
 
     def put_record(self, email: Email):
@@ -72,7 +78,7 @@ class DatabaseService:
 
             # 处理收件人字段
             if isinstance(email.recipient, list):
-                recipient = ','.join(email.recipient)
+                recipient = ",".join(email.recipient)
             else:
                 recipient = email.recipient
 
@@ -80,8 +86,11 @@ class DatabaseService:
             custom_data = json.dumps(email.custom_data) if email.custom_data else None
 
             # 处理计划发送时间字段
-            scheduled_send_time = email.scheduled_send_time.strftime(
-                '%Y-%m-%d %H:%M:%S') if email.scheduled_send_time else None
+            scheduled_send_time = (
+                email.scheduled_send_time.strftime("%Y-%m-%d %H:%M:%S")
+                if email.scheduled_send_time
+                else None
+            )
 
             # 插入记录
             query = """INSERT INTO email_records (
@@ -95,9 +104,9 @@ class DatabaseService:
                 email.body,
                 custom_data,
                 scheduled_send_time,
-                "pending",  # 初始状态为 pending
+                PENDING,  # 初始状态为 pending
                 email.callback_on_success,
-                email.callback_on_failure
+                email.callback_on_failure,
             )
 
             try:
@@ -122,7 +131,11 @@ class DatabaseService:
                 if result:
                     columns = [column[0] for column in cursor.description]
                     record_dict = {
-                        key: (json.loads(value) if key == "custom_data" and isinstance(value, str) else value)
+                        key: (
+                            json.loads(value)
+                            if key == "custom_data" and isinstance(value, str)
+                            else value
+                        )
                         for key, value in zip(columns, result)
                     }
                     return record_dict
@@ -137,13 +150,17 @@ class DatabaseService:
             columns = [column[0] for column in cursor.description]
             records = [
                 {
-                    key: (json.loads(value) if key == "custom_data" and isinstance(value, str) else value)
+                    key: (
+                        json.loads(value)
+                        if key == "custom_data" and isinstance(value, str)
+                        else value
+                    )
                     for key, value in zip(columns, row)
                 }
                 for row in cursor.fetchall()
             ]
             self.db.commit()
-            return {record['id']: Email(**record) for record in records}
+            return {record["id"]: Email(**record) for record in records}
 
     def update_record(self, record_id: int, status: str, sender: str = None):
         with self.db.cursor() as cursor:

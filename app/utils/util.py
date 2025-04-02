@@ -5,7 +5,7 @@ import yaml
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 app_name = "TransMail-Station"
-app_version = "0.0.2"
+app_version = "0.0.3"
 
 
 class Config:
@@ -32,7 +32,9 @@ class Config:
         if not os.path.exists(os.path.join(base_dir, "../../config/config.yml")):
             raise FileNotFoundError("config.yml File not exists")
 
-        with open(os.path.join(base_dir, "../../config/config.yml"), "r", encoding="utf-8") as yml_file:
+        with open(
+            os.path.join(base_dir, "../../config/config.yml"), "r", encoding="utf-8"
+        ) as yml_file:
             config = yaml.safe_load(yml_file)
             self.asgi_log_level = config["asgi_log_level"]
             self.app_log_level = config["app_log_level"]
@@ -63,7 +65,8 @@ class Logger:
         self.logger.setLevel(level.upper())
 
         formatter = logging.Formatter(
-            '{"level": "%(levelname)s", "time": "%(asctime)s", "file": "%(filename)s", "line": %(lineno)d, "message": "%(message)s"}')
+            '{"level": "%(levelname)s", "time": "%(asctime)s", "file": "%(filename)s", "line": %(lineno)d, "message": "%(message)s"}'
+        )
 
         # 添加控制台处理器
         console_handler = logging.StreamHandler()
