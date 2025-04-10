@@ -1,11 +1,3 @@
-# 设置 uvicorn 的日志级别
-# 选项: 'critical', 'error', 'warning', 'info', 'debug', 'trace'
-# 默认值: 'info'
-# Set the uvicorn log level.
-# Options: 'critical', 'error', 'warning', 'info', 'debug', 'trace'.
-# Default: 'info'.
-asgi_log_level: "info"
-
 # 设置应用程序的日志级别
 # 选项: 'error', 'warning', 'info', 'debug'
 # 默认值: 'info'

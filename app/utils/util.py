@@ -5,11 +5,16 @@ import yaml
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 app_name = "TransMail-Station"
-app_version = "0.0.3"
+app_version = "0.0.4"
+
+
+class CustomException(Exception):
+    def __init__(self, status_code: int, data: str | dict):
+        self.status_code = status_code
+        self.data = data
 
 
 class Config:
-    asgi_log_level = None
     app_log_level = None
 
     app_port = None
@@ -30,13 +35,14 @@ class Config:
         os.makedirs(os.path.join(base_dir, "../../config"), exist_ok=True)
 
         if not os.path.exists(os.path.join(base_dir, "../../config/config.yml")):
-            raise FileNotFoundError("config.yml File not exists")
+            message = "config.yml File not exists"
+            logger.error(message)
+            raise FileNotFoundError(message)
 
         with open(
             os.path.join(base_dir, "../../config/config.yml"), "r", encoding="utf-8"
         ) as yml_file:
             config = yaml.safe_load(yml_file)
-            self.asgi_log_level = config["asgi_log_level"]
             self.app_log_level = config["app_log_level"]
 
             self.app_port = config["app_port"]
@@ -77,6 +83,17 @@ class Logger:
         file_handler = logging.FileHandler(log_file)
         file_handler.setFormatter(formatter)
         self.logger.addHandler(file_handler)
+
+        # 配置 uvicorn 日志
+        self._configure_uvicorn_loggers(file_handler, console_handler, level.upper())
+
+    @staticmethod
+    def _configure_uvicorn_loggers(file_handler, console_handler, level):
+        uvicorn_logger = logging.getLogger("uvicorn")
+        uvicorn_logger.handlers = []  # 移除默认处理器
+        uvicorn_logger.setLevel(level)
+        uvicorn_logger.addHandler(file_handler)
+        uvicorn_logger.addHandler(console_handler)
 
     @staticmethod
     def _expand_message(message: str) -> str:

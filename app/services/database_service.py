@@ -21,9 +21,9 @@ class DatabaseService:
                 user=db_config["user"],
                 password=db_config["password"],
             )
-            logger.info("Database connection successful")
+            logger.info("Database connection successful.")
         except pymysql.err.OperationalError:
-            massage = "Database connection failed"
+            massage = "Database connection failed."
             logger.error(massage)
             raise RuntimeError(massage)
         self.db_init()
