@@ -17,7 +17,7 @@ def send_email(email: Email) -> dict[str, bool | Any]:
     contact_lists = config.contact_lists
     mail_server = config.mail_server
     email_type = email.type.value
-    mails = contact_lists[email_type]
+    mails = contact_lists[email_type]["mail"]
 
     if len(mails) == 1:
         sender = mails[0]
@@ -34,7 +34,7 @@ def send_email(email: Email) -> dict[str, bool | Any]:
 
     logger.debug(f"send_freq: {send_freq}")
 
-    alias = mail_server[sender].get("alias", None)
+    alias = contact_lists[email_type].get("alias", None)
     smtp_server = mail_server[sender]["host"]
     port = mail_server[sender]["port"]
     sender_email = mail_server[sender]["username"]

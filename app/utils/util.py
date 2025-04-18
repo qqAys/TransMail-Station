@@ -5,7 +5,7 @@ import yaml
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 app_name = "TransMail-Station"
-app_version = "0.0.4"
+app_version = os.getenv("TRANSMAIL_STATION_VERSION")
 
 
 class CustomException(Exception):

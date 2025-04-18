@@ -5,11 +5,14 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
 
+from app.utils.util import Config, app_name, app_version, logger, CustomException
+from upgrade_config import UpgradeConfig
+
+UpgradeConfig()
+config = Config()
+
 from app.routers import api_router
 from app.services.cron_service import should_send_email
-from app.utils.util import Config, app_name, app_version, logger, CustomException
-
-config = Config()
 
 
 @asynccontextmanager

@@ -188,7 +188,5 @@ class DatabaseService:
                 raise RuntimeError(message)
 
 
-db_service = DatabaseService()
-
 if __name__ == "__main__":
     pass

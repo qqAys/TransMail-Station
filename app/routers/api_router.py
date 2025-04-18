@@ -3,10 +3,11 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
 from app.models import email_model, system_model
-from app.services.database_service import db_service
+from app.services import database_service
 from app.utils.util import Config, CustomException, logger
 
 config = Config()
+db_service = database_service.DatabaseService()
 
 none_auth_resp = CustomException(401, "未授权的访问")
 valid_api_keys = config.valid_api_keys

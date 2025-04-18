@@ -1,3 +1,7 @@
+# 应用版本
+# app_version
+app_version: "0.0.5"
+
 # 设置应用程序的日志级别
 # 选项: 'error', 'warning', 'info', 'debug'
 # 默认值: 'info'
@@ -40,47 +44,48 @@ send_interval: 2
 # Contact list.
 contact_lists:
   sales_service:  # 示例 Example
-    - "sales@domain.com"
-    - "service@domain.com"
+    alias: "sales service"  # 联系人别名 (Contact alias)
+    mail:
+      - "sales@domain.com"
+      - "service@domain.com"
   admin_service:
-    - "admin@domain.com"
-    - "no-reply@domain.com"
+    alias: "admin service"
+    mail:
+      - "admin@domain.com"
+      - "no-reply@domain.com"
   notification_service:
-    - "notification@domain.com"
+    alias: "notification service"
+    mail:
+      - "notification@domain.com"
 
 # 邮件服务器配置, 使用SSL (与上面联系人列表中的邮箱对应)
 # Mail server configuration WITH SSL (corresponding to the emails in the contact list above).
 mail_server:
   sales@domain.com:
-    alias: "sales service"  # 发件人别名 (Alias)
     host: "smtp.domain.com"  # SMTP 主机 (SMTP host)
     port: 465  # SMTP 端口 (SMTP port)
     username: "sales@domain.com"  # 用户名 (Username)
     password: "password"  # 密码 (Password)
 
   service@domain.com:
-    alias: "sales service"
     host: "smtp.domain.com"
     port: 465
     username: "service@domain.com"
     password: "password"
 
   admin@domain.com:
-    alias: "admin service"
     host: "smtp.domain.com"
     port: 465
     username: "admin@domain.com"
     password: "password"
 
   no-reply@domain.com:
-    alias: "admin service"
     host: "smtp.domain.com"
     port: 465
     username: "no-reply@domain.com"
     password: "password"
 
   notification@domain.com:
-    alias: "notification service"
     host: "smtp.domain.com"
     port: 465
     username: "notification@domain.com"

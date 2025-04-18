@@ -1,10 +1,12 @@
 from app.models.email_model import MailStatus
-from app.services.database_service import db_service
+from app.services import database_service
 from app.services.email_service import send_email
 from app.utils.util import logger
 
 SENT = MailStatus.SENT.value
 FAILED = MailStatus.FAILED.value
+
+db_service = database_service.DatabaseService()
 
 
 def should_send_email():
