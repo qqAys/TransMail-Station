@@ -11,7 +11,7 @@ RUN apk update && \
     pip install --no-cache-dir -r requirements.txt && \
     rm -rf /var/cache/apk/* /tmp/* /root/.cache/pip
 
-ENV TRANSMAIL_STATION_VERSION=0.0.5
+ENV TRANSMAIL_STATION_VERSION=0.0.6
 
 EXPOSE 8100
 
