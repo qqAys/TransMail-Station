@@ -1,4 +1,5 @@
 import json
+from functools import wraps
 
 import pymysql
 
@@ -9,24 +10,56 @@ CANCEL = MailStatus.CANCEL.value
 PENDING = MailStatus.PENDING.value
 
 
+def handle_database_connection_error(func):
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        try:
+            return func(self, *args, **kwargs)
+        except pymysql.err.InterfaceError as e:
+            logger.warning(f"Database interface error detected: {e}. Attempting to reconnect...")
+            self.reconnect()  # 重连数据库
+            return func(self, *args, **kwargs)  # 重试操作
+    return wrapper
+
+
 class DatabaseService:
     def __init__(self):
         config = Config()
         db_config = config.app_database
         self.db_name = app_name.lower().replace("-", "_")
+        self.host = db_config["host"]
+        self.port = db_config["port"]
+        self.user = db_config["user"]
+        self.password = db_config["password"]
         try:
-            self.db = pymysql.connect(
-                host=db_config["host"],
-                port=db_config["port"],
-                user=db_config["user"],
-                password=db_config["password"],
-            )
+            self.db = self._create_connection()
             logger.info("Database connection successful.")
         except pymysql.err.OperationalError:
-            massage = "Database connection failed."
-            logger.error(massage)
-            raise RuntimeError(massage)
+            message = "Database connection failed."
+            logger.error(message)
+            raise RuntimeError(message)
         self.db_init()
+
+    def _create_connection(self):
+        """创建数据库连接"""
+        return pymysql.connect(
+            host=self.host,
+            port=self.port,
+            user=self.user,
+            password=self.password,
+            db=self.db_name
+        )
+
+    def reconnect(self):
+        """重连数据库"""
+        try:
+            if self.db:
+                self.db.close()
+            self.db = self._create_connection()
+            self.db_init()
+            logger.info("Reconnection successful.")
+        except Exception as e:
+            logger.error(f"Reconnection failed: {str(e)}")
 
     def db_init(self):
         # 建库
@@ -72,6 +105,7 @@ class DatabaseService:
                 )
                 self.db.commit()
 
+    @handle_database_connection_error
     def put_record(self, email: Email):
         with self.db.cursor() as cursor:
             cursor.execute(f"USE `{self.db_name}`;")
@@ -119,6 +153,7 @@ class DatabaseService:
                 logger.error(message)
                 raise RuntimeError(message)
 
+    @handle_database_connection_error
     def get_record(self, record_id: int = None):
         with self.db.cursor() as cursor:
             cursor.execute(f"USE `{self.db_name}`;")
@@ -162,6 +197,7 @@ class DatabaseService:
             self.db.commit()
             return {record["id"]: Email(**record) for record in records}
 
+    @handle_database_connection_error
     def update_record(self, record_id: int, status: str, sender: str = None):
         with self.db.cursor() as cursor:
             cursor.execute(f"USE `{self.db_name}`;")
