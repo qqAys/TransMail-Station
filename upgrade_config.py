@@ -42,7 +42,7 @@ class UpgradeConfig:
 
         # config_version is none or less than 0.0.5
         if current_config_version is None or version.parse(
-                current_config_version
+            current_config_version
         ) <= version.parse("0.0.4"):
             logger.info("Upgrading config.yml ...")
             self.should_upgrade = True
@@ -65,7 +65,7 @@ class UpgradeConfig:
 
             return
 
-        if version.parse(current_config_version) < version.parse("0.0.6"):
+        if version.parse(current_config_version) < version.parse("0.0.7"):
             logger.info("Upgrading config.yml ...")
             self.should_upgrade = True
 
@@ -76,7 +76,14 @@ class UpgradeConfig:
 
     def rewrite_config(self):
         with open("./config/config.yml", "w") as f:
-            yaml.safe_dump(self.config, f, allow_unicode=True, encoding="utf-8", sort_keys=False, default_flow_style=False)
+            yaml.safe_dump(
+                self.config,
+                f,
+                allow_unicode=True,
+                encoding="utf-8",
+                sort_keys=False,
+                default_flow_style=False,
+            )
 
         logger.info(f"Current config version: {self.config['app_version']}")
         logger.info("Rewrite config.yml Done.")

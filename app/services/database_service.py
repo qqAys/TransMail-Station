@@ -15,10 +15,13 @@ def handle_database_connection_error(func):
     def wrapper(self, *args, **kwargs):
         try:
             return func(self, *args, **kwargs)
-        except pymysql.err.InterfaceError as e:
-            logger.warning(f"Database interface error detected: {e}. Attempting to reconnect...")
+        except (pymysql.err.InterfaceError, pymysql.err.OperationalError) as e:
+            logger.warning(
+                f"Database interface error detected: {e}. Attempting to reconnect..."
+            )
             self.reconnect()  # 重连数据库
             return func(self, *args, **kwargs)  # 重试操作
+
     return wrapper
 
 
@@ -47,7 +50,7 @@ class DatabaseService:
             port=self.port,
             user=self.user,
             password=self.password,
-            db=self.db_name
+            db=self.db_name,
         )
 
     def reconnect(self):
